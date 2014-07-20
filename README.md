@@ -1,8 +1,8 @@
 # Octopress Escape Code
 
-Automatically escape code blocks so you can use liquid tags
-without worry having to surround them with unsightly `{% raw %}` and
-`{% endraw %}` tags.
+Automatically escape code blocks so you can use liquid tags without worry having to surround them with unsightly 
+`{% raw %}` and `{% endraw %}` tags. This escapes code block created with `{% highlight %}`, `{% codeblock %}`, code fences,
+Markdown indented code blocks, and in-line back tick code tags.
 
 [![Build Status](https://travis-ci.org/octopress/escape-code.svg)](https://travis-ci.org/octopress/escape-code)
 [![Gem Version](http://img.shields.io/gem/v/octopress-escape-code.svg)](https://rubygems.org/gems/octopress-escape-code)
