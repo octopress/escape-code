@@ -39,9 +39,9 @@ ensuring that their contents aren't parsed by Liquid. For example, a `{% highlig
     {% endraw %}{% endhighlight %}
 
 The `{% highlight %}` block is still interpreted by Liquid, but the contents are escaped. This will also escape the 
-[Octopress code block](https://github.com/octopress/code-block) plugin.
+[Octopress codeblock](https://github.com/octopress/codeblock) plugin.
 
-Some Markdown processors and the [Octopress codefence](https://github.com/octopress/code-block) plugin render code blocks which are
+Some Markdown processors and the [Octopress codefence](https://github.com/octopress/codefence) plugin render code blocks which are
 surrounded by three back ticks. These are also wrapped with `{% raw %}` tags.
 
     {% raw %}
@@ -71,8 +71,7 @@ This works with double back tick code tags as well.
 
 ### Disable Automatic escaping
 
-Adding this gem will automatically enable code escaping for your entire site. To disable code escaping for a single page, add this to the
-page's YAML front-matter.
+To disable code escaping for a single page, add this to the page's YAML front-matter.
 
     escape_code: fasle
 
@@ -81,7 +80,7 @@ If you prefer, you can enable it on a per page basis, by turning off automatic c
     // in Jekyll's _config.yml
     escape_code: false
 
-Then, to enable code escaping on a single page simply add `escape_code: true` to the page's YAML front-matter.
+Then, add `escape_code: true` to the page's YAML front-matter to enable code escaping for a single page.
 
 
 ## Contributing
