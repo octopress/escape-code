@@ -1,8 +1,8 @@
 # Octopress Escape Code
 
 Automatically escape code blocks so you can use liquid tags
-without worry having to surround them with unsightly `raw` and
-`endwra` tags.
+without worry having to surround them with unsightly `{% raw %}` and
+`{% endraw %}` tags.
 
 [![Build Status](https://travis-ci.org/octopress/escape-code.svg)](https://travis-ci.org/octopress/escape-code)
 [![Gem Version](http://img.shields.io/gem/v/octopress-escape-code.svg)](https://rubygems.org/gems/octopress-escape-code)
@@ -28,6 +28,60 @@ Next add it to your gems list in Jekyll's `_config.yml`
       - octopress-escape-code
 
 ## Usage
+
+### Code plugins
+
+Before Jekyll parses your pages and posts through Liquid, code is automatically wrapped with `{% raw %}` blocks,
+ensuring that their contents aren't parsed by Liquid. For example, a `{% highlight %}` block's contents are wrapped like this.
+
+    {% highlight html %}{% raw %}
+    <article>{{ post.content }}</article>
+    {% endraw %}{% endhighlight %}
+
+The `{% highlight %}` block is still interpreted by Liquid, but the contents are escaped. This will also escape the 
+[Octopress code block](https://github.com/octopress/code-block) plugin.
+
+Some Markdown processors and the [Octopress codefence](https://github.com/octopress/code-block) plugin render code blocks which are
+surrounded by three back ticks. These are also wrapped with `{% raw %}` tags.
+
+    {% raw %}
+    ```html
+    <article>{{ post.content }}</article>
+    ```
+    {% endraw %}
+
+Liquid sees the raw tags and ignores the contents, but the code fences are still interpreted.
+
+### Standard Markdown code
+
+If you are using Markdown, you may create a code blocks by indenting four spaces or a single tab. These code blocks are escaped like this.
+
+```
+{% raw %}
+    <article>{{ post.content }}</article>
+{% endraw %}
+```
+
+You can also define in-line code tags by surrounding text with back ticks, like this ```some code``` which are automatically escaped as
+well.
+
+    This inline {% raw %}`<code>`{% endraw %} tag is escaped.
+
+This works with double back tick code tags as well.
+
+### Disable Automatic escaping
+
+Adding this gem will automatically enable code escaping for your entire site. To disable code escaping for a single page, add this to the
+page's YAML front-matter.
+
+    escape_code: fasle
+
+If you prefer, you can enable it on a per page basis, by turning off automatic code escaping in your site's configuration.
+
+    // in Jekyll's _config.yml
+    escape_code: false
+
+Then, to enable code escaping on a single page simply add `escape_code: true` to the page's YAML front-matter.
 
 
 ## Contributing
