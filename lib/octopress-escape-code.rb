@@ -1,9 +1,26 @@
 require "octopress-escape-code/version"
-require 'jekyll-page-hooks'
+require 'octopress-hooks'
 
-module Jekyll
-  class EscapeCode < PageHooks
-    def pre_render(page)
+module Octopress
+  module EscapeCode
+
+    class EscapePage < Octopress::Hooks::Page
+      def pre_render(page)
+        if Octopress::EscapeCode.escape_enabled?(page)
+          page.content = Octopress::EscapeCode.escape(page.content, page.ext)
+        end
+      end
+    end
+
+    class EscapePost < Octopress::Hooks::Post
+      def pre_render(page)
+        if Octopress::EscapeCode.escape_enabled?(page)
+          page.content = Octopress::EscapeCode.escape(page.content, page.ext)
+        end
+      end
+    end
+
+    def self.escape_enabled?(page)
       site_config = page.site.config['escape_code']
       site_config = true if site_config.nil?
 
@@ -11,16 +28,8 @@ module Jekyll
       page_config = site_config if page_config.nil?
 
       enabled = page_config
-
-      if enabled
-        page.content = Octopress::EscapeCode.escape(page.content, page.ext)
-      end
     end
-  end
-end
 
-module Octopress
-  module EscapeCode
     def self.escape(content, ext)
       ext = ext.downcase
       content.encode!("UTF-8")
