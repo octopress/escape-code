@@ -6,7 +6,7 @@ Some text
 
 ```
 Some kind of example:
-{% some tag that should break %}
+    {% some tag that should break %}
 Stuff!
 ```
 guys!
@@ -24,11 +24,10 @@ Stuff!
 
 {% codeblock html %}
 Some kind of example:
+    stuff
 {% some tag that should break %}
 Stuff!
 {% endcodeblock %}
-
     stuff
-    asdfadsf
-
+    {% foo %}
 some text

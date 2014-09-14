@@ -35,21 +35,16 @@ module Octopress
       content.encode!("UTF-8")
       md_ext = %w{.markdown .mdown .mkdn .md .mkd .mdwn .mdtxt .mdtext}
 
-      # Escape codefenced codeblocks
-      content = content.gsub /^(`{3}.+?`{3})/m do
-        "{% raw %}\n#{$1}\n{% endraw %}"
-      end
-
       # Escape markdown style code blocks
       if md_ext.include?(ext)
 
         # Escape four space indented code blocks
-        content = content.gsub /^(\s{4}.+?)\n($|[^\s{4}])/m do
+        content = content.gsub /^(\s{4}.+?)\n($|\S)/m do
           "{% raw %}\n#{$1}\n{% endraw %}\n#{$2}"
         end
         
         # Escape tab indented code blocks
-        content = content.gsub /^(\t.+?)\n($|[^\t])/m do
+        content = content.gsub /^(\t.+?)\n($|\S)/m do
           "{% raw %}\n#{$1}\n{% endraw %}\n#{$2}"
         end
 
@@ -60,14 +55,20 @@ module Octopress
 
       end
 
+      # Escape codefenced codeblocks
+      content = content.gsub /^(`{3}.+?`{3})/m do
+        c = $1.gsub /{% (end)?raw %}\n/, ''
+        "{% raw %}\n#{c}\n{% endraw %}"
+      end
+
       # Escape codeblock tag contents
-      content = content.gsub /^({%\s*codeblock.+?%})(.+?)({%\s*endcodeblock\s*%})/m do
-        "#{$1}{% raw %}#{$2}{% endraw %}#{$3}"
+      content = content.gsub /^({%\s*codeblock.+?%})(.+?){%\s*endcodeblock\s*%}/m do
+        "#{$1}{% raw %}#{$2.gsub /{% (end)?raw %}\n/, ''}{% endraw %}{% endcodeblock %}"
       end
 
       # Escape highlight tag contents
-      content = content.gsub /^({%\s*highlight.+?%})(.+?)({%\s*endhighlight\s*%})/m do
-        "#{$1}{% raw %}#{$2}{% endraw %}#{$3}"
+      content = content.gsub /^({%\s*highlight.+?%})(.+?){%\s*endhighlight\s*%}/m do
+        "#{$1}{% raw %}#{$2.gsub(/{% (end)?raw %}\n/, '')}{% endraw %}{% endhighlight %}"
       end
 
       content
