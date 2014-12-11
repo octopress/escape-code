@@ -12,7 +12,7 @@ Stuff!
 ```
 guys!
 
-Testing the ``dobule {% _guys_ seriously? %} ` type`` of code thing.
+Testing the ``double {% _guys_ seriously? %} ` type`` of code thing.
 
 The random tab character below shouldn't trigger an escape.
 	
