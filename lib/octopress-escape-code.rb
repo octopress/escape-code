@@ -39,17 +39,22 @@ module Octopress
       if md_ext.include?(ext)
 
         # Escape four space indented code blocks
-        content = content.gsub /^(\s{4}.+?)\n($|\S)/m do
+        content = content.gsub /^( {4}[^\n].+?)\n($|\S)/m do
           "{% raw %}\n#{$1}\n{% endraw %}\n#{$2}"
         end
         
         # Escape tab indented code blocks
-        content = content.gsub /^(\t.+?)\n($|\S)/m do
+        content = content.gsub /^(\t[^\n].+?)\n($|\S)/m do
           "{% raw %}\n#{$1}\n{% endraw %}\n#{$2}"
         end
 
         # Escape in-line code backticks
-        content = content.gsub /(`{1,2}[^`\n]+?`{1,2})/ do
+        content = content.gsub /(`[^`\n]+?`)/ do
+          "{% raw %}#{$1}{% endraw %}"
+        end
+
+        # Escape in-line code double backticks
+        content = content.gsub /(``[^\n]+?``)/ do
           "{% raw %}#{$1}{% endraw %}"
         end
 
@@ -57,8 +62,15 @@ module Octopress
 
       # Escape codefenced codeblocks
       content = content.gsub /^(`{3}.+?`{3})/m do
-        c = $1.gsub /{% (end)?raw %}\n/, ''
-        "{% raw %}\n#{c}\n{% endraw %}"
+        
+        # Replace any raw/endraw tags inside of codefence block
+        # as some of the regex above may have escaped contents
+        # of the codefence block
+        #
+        code = $1.gsub(/{% raw %}(\n)?/, '').gsub(/(\n)?{% endraw %}/, '') 
+
+        # Wrap codefence content in raw tags
+        "{% raw %}\n#{code}\n{% endraw %}"
       end
 
       # Escape codeblock tag contents

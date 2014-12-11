@@ -5,14 +5,17 @@ escape_code: true
 Some text
 
 ```
+ `stuff`
 Some kind of example:
     {% some tag that should break %}
 Stuff!
 ```
 guys!
 
-Testing the ``dobule ` type`` of code thing.
+Testing the ``dobule {% _guys_ seriously? %} ` type`` of code thing.
 
+The random tab character below shouldn't trigger an escape.
+	
 So here's a `{% nonexistant tag %}` that should be escaped.
 
 {% highlight html %}
