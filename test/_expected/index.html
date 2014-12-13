@@ -24,3 +24,10 @@ Stuff!</code></pre></div>
 {% foo %}
 </code></pre></div>
 <p>some text</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{% highlight html %}{% raw %}
+&lt;article&gt;{{ post.content }}&lt;/article&gt;
+{% endraw %}{% endhighlight %}
+</code></pre></div>
+<p>Test inner space block raw replacement:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">This inline {% raw %}`&lt;code&gt;`{% endraw %} tag is escaped.
+</code></pre></div>

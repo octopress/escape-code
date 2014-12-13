@@ -7,33 +7,53 @@ module Octopress
     class EscapePage < Octopress::Hooks::Page
       def pre_render(page)
         if Octopress::EscapeCode.escape_enabled?(page)
-          page.content = Octopress::EscapeCode.escape(page.content, page.ext)
+          page.content = Octopress::EscapeCode.escape(page)
         end
+      end
+
+      def post_render(page)
+        Octopress::EscapeCode.unescape_raw(page)
       end
     end
 
     class EscapePost < Octopress::Hooks::Post
       def pre_render(page)
         if Octopress::EscapeCode.escape_enabled?(page)
-          page.content = Octopress::EscapeCode.escape(page.content, page.ext)
+          page.content = Octopress::EscapeCode.escape(page)
         end
+      end
+
+      def post_render(page)
+        Octopress::EscapeCode.unescape_raw(page)
       end
     end
 
-    def self.escape_enabled?(page)
-      site_config = page.site.config['escape_code']
-      site_config = true if site_config.nil?
-
-      page_config = page.data['escape_code']
-      page_config = site_config if page_config.nil?
-
-      enabled = page_config
+    def self.unescape_raw(page)
+      page.output.gsub!(/\*-(end)?raw-\*/, '% \1raw %')
     end
 
-    def self.escape(content, ext)
-      ext = ext.downcase
-      content.encode!("UTF-8")
+    def self.escape_enabled?(page)
+      get_config(page, 'escape_code', true)
+    end
+
+    def self.get_config(page, config, default = true)
+      site_config = page.site.config[config]
+      site_config = default if site_config.nil?
+
+      page_config = page.data[config]
+      page_config = site_config if page_config.nil?
+
+      page_config
+    end
+
+    def self.escape(page)
+      ext = page.ext.downcase
+      content = page.content.encode!("UTF-8")
       md_ext = %w{.markdown .mdown .mkdn .md .mkd .mdwn .mdtxt .mdtext}
+
+      # Escape existing raw tags
+      #
+      content = content.gsub(/% (end)?raw %/, '*-\1raw-*')
 
       # Escape markdown style code blocks
       if md_ext.include?(ext)
@@ -58,6 +78,18 @@ module Octopress
           "{% raw %}#{$1}{% endraw %}"
         end
 
+        content = content.gsub /^( {4}[^\n].+?)\n($|\S)/m do
+          c1 = $1
+          c2 = $2
+          "#{c1.gsub(/{% (end)?raw %}/, '')}\n#{c2}"
+        end
+
+        # Escape tab indented code blocks
+        content = content.gsub /^(\t[^\n].+?)\n($|\S)/m do
+          c1 = $1
+          c2 = $2
+          "#{c1.gsub(/{% (end)?raw %}/, '')}\n#{c2}"
+        end
       end
 
       # Escape codefenced codeblocks
@@ -86,4 +118,14 @@ module Octopress
       content
     end
   end
+end
+
+# Add documentation for this plugin
+if defined? Octopress::Docs
+  Octopress::Docs.add({
+    name:        "Octopress Escape Code",
+    description: "Automatically escape code with {% raw %} blocks, preventing internal Liquid processing.",
+    source_url:  "https://github.com/octopress/escape-code",
+    path:         File.expand_path(File.join(File.dirname(__FILE__), "../"))
+  })
 end

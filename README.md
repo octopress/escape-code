@@ -1,3 +1,6 @@
+<!---
+escape_raw: true
+--->
 # Octopress Escape Code
 
 Automatically escape code blocks so you can use liquid tags without worry having to surround them with unsightly 
@@ -62,7 +65,7 @@ If you are using Markdown, you may create a code blocks by indenting four spaces
 {% endraw %}
 ```
 
-You can also define in-line code tags by surrounding text with back ticks, like this ```some code``` which are automatically escaped as
+You can also define in-line code tags by surrounding text with back ticks, like this `` `some code` `` which are automatically escaped as
 well.
 
     This inline {% raw %}`<code>`{% endraw %} tag is escaped.
@@ -81,7 +84,6 @@ If you prefer, you can enable it on a per page basis, by turning off automatic c
     escape_code: false
 
 Then, add `escape_code: true` to the page's YAML front-matter to enable code escaping for a single page.
-
 
 ## Contributing
 

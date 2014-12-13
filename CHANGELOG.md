@@ -1,7 +1,10 @@
 # Changelog
 
-### 1.0.3 - 2014-12-10
+### 1.0.4 - 2014-12-10
+- Added support for documentation in Octopress docs.
+- Now preserving hand written raw tags inside of code blocks.
 
+### 1.0.3 - 2014-12-10
 Fixes:
 - Random tabs don't trigger escapes.
 - Raw tags inside of code fences are properly stripped.

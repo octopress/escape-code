@@ -1,5 +1,6 @@
 ---
 escape_code: true
+escape_raw: true
 ---
 
 Some text
@@ -34,3 +35,11 @@ Stuff!
     stuff
     {% foo %}
 some text
+
+	{% highlight html %}{% raw %}
+	<article>{{ post.content }}</article>
+	{% endraw %}{% endhighlight %}
+
+Test inner space block raw replacement:
+
+    This inline {% raw %}`<code>`{% endraw %} tag is escaped.
