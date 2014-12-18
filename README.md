@@ -30,6 +30,19 @@ Next add it to your gems list in Jekyll's `_config.yml`
     gems:
       - octopress-escape-code
 
+### Configuration
+
+To escape code blocks on a single page, add this configuration to the page's YAML front-matter.
+
+    escape_code: true
+
+If you prefer, you can enable it on a site-wide basis.
+
+    // in Jekyll's _config.yml
+    escape_code: true
+
+Adding `escape_code: false` any the page's YAML front-matter will disable code escaping for that page.
+
 ## Usage
 
 ### Code plugins
@@ -71,19 +84,6 @@ well.
     This inline {% raw %}`<code>`{% endraw %} tag is escaped.
 
 This works with double back tick code tags as well.
-
-### Disable Automatic escaping
-
-To disable code escaping for a single page, add this to the page's YAML front-matter.
-
-    escape_code: fasle
-
-If you prefer, you can enable it on a per page basis, by turning off automatic code escaping in your site's configuration.
-
-    // in Jekyll's _config.yml
-    escape_code: false
-
-Then, add `escape_code: true` to the page's YAML front-matter to enable code escaping for a single page.
 
 ## Contributing
 

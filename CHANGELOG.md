@@ -1,5 +1,8 @@
 # Changelog
 
+### 2.0.0 - 2014-12-18
+- Site-wide code escaping now defaults to false.
+
 ### 1.0.4 - 2014-12-10
 - Added support for documentation in Octopress docs.
 - Now preserving hand written raw tags inside of code blocks.

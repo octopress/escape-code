@@ -33,10 +33,10 @@ module Octopress
     end
 
     def self.escape_enabled?(page)
-      get_config(page, 'escape_code', true)
+      get_config(page, 'escape_code', false)
     end
 
-    def self.get_config(page, config, default = true)
+    def self.get_config(page, config, default)
       site_config = page.site.config[config]
       site_config = default if site_config.nil?
 
