@@ -1,5 +1,8 @@
 # Changelog
 
+### 2.0.1 - 2014-12-19
+- Fixed issue where code blocks would get additional whitespace.
+
 ### 2.0.0 - 2014-12-18
 - Site-wide code escaping now defaults to false.
 

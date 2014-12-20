@@ -60,12 +60,13 @@ module Octopress
 
         # Escape four space indented code blocks
         content = content.gsub /^( {4}[^\n].+?)\n($|\S)/m do
-          "{% raw %}\n#{$1}\n{% endraw %}\n#{$2}"
+          "{% raw %}#{$1}\n{% endraw %}#{$2}"
         end
+        
         
         # Escape tab indented code blocks
         content = content.gsub /^(\t[^\n].+?)\n($|\S)/m do
-          "{% raw %}\n#{$1}\n{% endraw %}\n#{$2}"
+          "{% raw %}#{$1}\n{% endraw %}#{$2}"
         end
 
         # Escape in-line code backticks
@@ -78,14 +79,16 @@ module Octopress
           "{% raw %}#{$1}{% endraw %}"
         end
 
-        content = content.gsub /^( {4}[^\n].+?)\n($|\S)/m do
+        # Remove internal raw tags within space intented codeblocks
+        content = content.gsub /( {4}[^\n].+?)\n($|\S)/m do
           c1 = $1
           c2 = $2
+
           "#{c1.gsub(/{% (end)?raw %}/, '')}\n#{c2}"
         end
 
-        # Escape tab indented code blocks
-        content = content.gsub /^(\t[^\n].+?)\n($|\S)/m do
+        # Remove internal raw tags within tab intented codeblocks
+        content = content.gsub /(\t[^\n].+?)\n($|\S)/m do
           c1 = $1
           c2 = $2
           "#{c1.gsub(/{% (end)?raw %}/, '')}\n#{c2}"
@@ -99,7 +102,7 @@ module Octopress
         # as some of the regex above may have escaped contents
         # of the codefence block
         #
-        code = $1.gsub(/{% raw %}(\n)?/, '').gsub(/(\n)?{% endraw %}/, '') 
+        code = $1.gsub(/{% raw %}/, '').gsub(/{% endraw %}/, '') 
 
         # Wrap codefence content in raw tags
         "{% raw %}\n#{code}\n{% endraw %}"
@@ -107,12 +110,12 @@ module Octopress
 
       # Escape codeblock tag contents
       content = content.gsub /^({%\s*codeblock.+?%})(.+?){%\s*endcodeblock\s*%}/m do
-        "#{$1}{% raw %}#{$2.gsub /{% (end)?raw %}\n/, ''}{% endraw %}{% endcodeblock %}"
+        "#{$1}{% raw %}#{$2.gsub /{% (end)?raw %}/, ''}{% endraw %}{% endcodeblock %}"
       end
 
       # Escape highlight tag contents
       content = content.gsub /^({%\s*highlight.+?%})(.+?){%\s*endhighlight\s*%}/m do
-        "#{$1}{% raw %}#{$2.gsub(/{% (end)?raw %}\n/, '')}{% endraw %}{% endhighlight %}"
+        "#{$1}{% raw %}#{$2.gsub(/{% (end)?raw %}/, '')}{% endraw %}{% endhighlight %}"
       end
 
       content
