@@ -58,15 +58,9 @@ module Octopress
       # Escape markdown style code blocks
       if md_ext.include?(ext)
 
-        # Escape four space indented code blocks
-        content = content.gsub /^( {4}[^\n].+?)\n($|\S)/m do
-          "{% raw %}#{$1}\n{% endraw %}#{$2}"
-        end
-        
-        
-        # Escape tab indented code blocks
-        content = content.gsub /^(\t[^\n].+?)\n($|\S)/m do
-          "{% raw %}#{$1}\n{% endraw %}#{$2}"
+        # Escape four tab or space indented code blocks
+        content = content.gsub /^((\t| {4})[^\n].+?)\n($|\S)/m do
+          "{% raw %}#{$1}\n{% endraw %}#{$3}"
         end
 
         # Escape in-line code backticks
@@ -79,19 +73,13 @@ module Octopress
           "{% raw %}#{$1}{% endraw %}"
         end
 
-        # Remove internal raw tags within space intented codeblocks
-        content = content.gsub /( {4}[^\n].+?)\n($|\S)/m do
+        # Remove internal raw tags within tab or space intented codeblocks
+        content = content.gsub /^({% raw %})?((\t| {4})[^\n].+?)\n($|\S)/m do
           c1 = $1
           c2 = $2
+          c4 = $4
 
-          "#{c1.gsub(/{% (end)?raw %}/, '')}\n#{c2}"
-        end
-
-        # Remove internal raw tags within tab intented codeblocks
-        content = content.gsub /(\t[^\n].+?)\n($|\S)/m do
-          c1 = $1
-          c2 = $2
-          "#{c1.gsub(/{% (end)?raw %}/, '')}\n#{c2}"
+          "#{c1}#{c2.gsub(/{% (end)?raw %}/, '')}\n#{c4}"
         end
       end
 

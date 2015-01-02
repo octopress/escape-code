@@ -1,5 +1,9 @@
 # Changelog
 
+### 2.0.2 - 2015-01-02
+- Fixed issue where insignificant whitespace would break escaping.
+- Simplified space and tab code block matching expressions.
+
 ### 2.0.1 - 2014-12-19
 - Fixed issue where code blocks would get additional whitespace.
 
