@@ -1,5 +1,8 @@
 # Changelog
 
+### 2.0.4 - 2015-01-03
+- Updated regex order to allow different nested code block types.
+
 ### 2.0.3 - 2015-01-03
 - Set plugin priority to lowest, ensuring that code is escaped after all hooks.
 

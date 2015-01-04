@@ -87,6 +87,16 @@ module Octopress
         end
       end
 
+      # Escape codeblock tag contents
+      content = content.gsub /^({%\s*codeblock.+?%})(.+?){%\s*endcodeblock\s*%}/m do
+        "#{$1}{% raw %}#{$2.gsub /{% (end)?raw %}/, ''}{% endraw %}{% endcodeblock %}"
+      end
+
+      # Escape highlight tag contents
+      content = content.gsub /^({%\s*highlight.+?%})(.+?){%\s*endhighlight\s*%}/m do
+        "#{$1}{% raw %}#{$2.gsub(/{% (end)?raw %}/, '')}{% endraw %}{% endhighlight %}"
+      end
+
       # Escape codefenced codeblocks
       content = content.gsub /^(`{3}.+?`{3})/m do
         
@@ -98,16 +108,6 @@ module Octopress
 
         # Wrap codefence content in raw tags
         "{% raw %}\n#{code}\n{% endraw %}"
-      end
-
-      # Escape codeblock tag contents
-      content = content.gsub /^({%\s*codeblock.+?%})(.+?){%\s*endcodeblock\s*%}/m do
-        "#{$1}{% raw %}#{$2.gsub /{% (end)?raw %}/, ''}{% endraw %}{% endcodeblock %}"
-      end
-
-      # Escape highlight tag contents
-      content = content.gsub /^({%\s*highlight.+?%})(.+?){%\s*endhighlight\s*%}/m do
-        "#{$1}{% raw %}#{$2.gsub(/{% (end)?raw %}/, '')}{% endraw %}{% endhighlight %}"
       end
 
       content
