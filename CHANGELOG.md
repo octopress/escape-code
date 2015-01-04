@@ -1,5 +1,8 @@
 # Changelog
 
+### 2.0.3 - 2015-01-03
+- Set plugin priority to lowest, ensuring that code is escaped after all hooks.
+
 ### 2.0.2 - 2015-01-02
 - Fixed issue where insignificant whitespace would break escaping.
 - Simplified space and tab code block matching expressions.

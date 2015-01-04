@@ -5,6 +5,8 @@ module Octopress
   module EscapeCode
 
     class EscapePage < Octopress::Hooks::Page
+      priority :lowest
+
       def pre_render(page)
         if Octopress::EscapeCode.escape_enabled?(page)
           page.content = Octopress::EscapeCode.escape(page)
@@ -17,6 +19,8 @@ module Octopress
     end
 
     class EscapePost < Octopress::Hooks::Post
+      priority :lowest
+
       def pre_render(page)
         if Octopress::EscapeCode.escape_enabled?(page)
           page.content = Octopress::EscapeCode.escape(page)
