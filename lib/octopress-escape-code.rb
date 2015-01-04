@@ -14,7 +14,7 @@ module Octopress
       end
 
       def post_render(page)
-        Octopress::EscapeCode.unescape_raw(page)
+        Octopress::EscapeCode.unescape_brackets(page.output)
       end
     end
 
@@ -28,12 +28,8 @@ module Octopress
       end
 
       def post_render(page)
-        Octopress::EscapeCode.unescape_raw(page)
+        Octopress::EscapeCode.unescape_brackets(page.output)
       end
-    end
-
-    def self.unescape_raw(page)
-      page.output.gsub!(/\*-(end)?raw-\*/, '% \1raw %')
     end
 
     def self.escape_enabled?(page)
@@ -50,51 +46,44 @@ module Octopress
       page_config
     end
 
+    def self.escape_brackets(content)
+      content.gsub(/{/,'&#x7b;').gsub(/}/, '&#x7d;')
+    end
+
+    def self.unescape_brackets(content)
+      content.gsub!(/&(amp;)?#x7b;/, '{')
+      content.gsub!(/&(amp;)?#x7d;/, '}')
+      content
+    end
+
     def self.escape(page)
       ext = page.ext.downcase
       content = page.content.encode!("UTF-8")
       md_ext = %w{.markdown .mdown .mkdn .md .mkd .mdwn .mdtxt .mdtext}
-
-      # Escape existing raw tags
-      #
-      content = content.gsub(/% (end)?raw %/, '*-\1raw-*')
 
       # Escape markdown style code blocks
       if md_ext.include?(ext)
 
         # Escape four tab or space indented code blocks
         content = content.gsub /^((\t| {4})[^\n].+?)\n($|\S)/m do
-          "{% raw %}#{$1}\n{% endraw %}#{$3}"
+          "#{escape_brackets $1}\n#{$3}"
         end
 
         # Escape in-line code backticks
         content = content.gsub /(`[^`\n]+?`)/ do
-          "{% raw %}#{$1}{% endraw %}"
+          "#{escape_brackets $1}"
         end
 
         # Escape in-line code double backticks
         content = content.gsub /(``[^\n]+?``)/ do
-          "{% raw %}#{$1}{% endraw %}"
+          escape_brackets $1
         end
 
-        # Remove internal raw tags within tab or space intented codeblocks
-        content = content.gsub /^({% raw %})?((\t| {4})[^\n].+?)\n($|\S)/m do
-          c1 = $1
-          c2 = $2
-          c4 = $4
-
-          "#{c1}#{c2.gsub(/{% (end)?raw %}/, '')}\n#{c4}"
-        end
       end
 
-      # Escape codeblock tag contents
-      content = content.gsub /^({%\s*codeblock.+?%})(.+?){%\s*endcodeblock\s*%}/m do
-        "#{$1}{% raw %}#{$2.gsub /{% (end)?raw %}/, ''}{% endraw %}{% endcodeblock %}"
-      end
-
-      # Escape highlight tag contents
-      content = content.gsub /^({%\s*highlight.+?%})(.+?){%\s*endhighlight\s*%}/m do
-        "#{$1}{% raw %}#{$2.gsub(/{% (end)?raw %}/, '')}{% endraw %}{% endhighlight %}"
+      # Escape highlight and codeblock tag contents
+      content = content.gsub /^({%\s*(codeblock|highlight).+?%})(.+?){%\s*end(codeblock|highlight)\s*%}/m do
+        "#{$1}{% raw %}#{unescape_brackets $3}{% endraw %}{% end#{$4} %}"
       end
 
       # Escape codefenced codeblocks
@@ -104,7 +93,7 @@ module Octopress
         # as some of the regex above may have escaped contents
         # of the codefence block
         #
-        code = $1.gsub(/{% raw %}/, '').gsub(/{% endraw %}/, '') 
+        code = unescape_brackets($1).gsub(/{% (end)?raw %}/, '')
 
         # Wrap codefence content in raw tags
         "{% raw %}\n#{code}\n{% endraw %}"

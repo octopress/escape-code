@@ -1,5 +1,8 @@
 # Changelog
 
+### 2.0.5 - 2015-01-04
+- Simplified code escaping system, reducing use of raw tags.
+
 ### 2.0.4 - 2015-01-03
 - Updated regex order to allow different nested code block types.
 
