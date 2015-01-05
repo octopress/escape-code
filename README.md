@@ -11,24 +11,29 @@ Markdown indented code blocks, and in-line back tick code tags.
 [![Gem Version](http://img.shields.io/gem/v/octopress-escape-code.svg)](https://rubygems.org/gems/octopress-escape-code)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://octopress.mit-license.org)
 
+
 ## Installation
 
-Add this line to your application's Gemfile:
+### Using Bundler
 
-    gem 'octopress-escape-code'
+Add this gem to your site's Gemfile in the `:jekyll_plugins` group:
 
-And then execute:
+    group :jekyll_plugins do
+      gem 'octopress-escape-code'
+    end
+
+Then install the gem with Bundler
 
     $ bundle
 
-Or install it yourself as:
+### Manual Installation
 
     $ gem install octopress-escape-code
 
-Next add it to your gems list in Jekyll's `_config.yml`
+Then add the gem to your Jekyll configuration.
 
     gems:
-      - octopress-escape-code
+      -octopress-escape-code
 
 ### Configuration
 

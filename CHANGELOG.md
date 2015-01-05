@@ -1,5 +1,11 @@
 # Changelog
 
+### 2.0.6 - 2015-01-04
+- Updated docs with better installation instructions.
+
+### 2.0.5 - 2015-01-04
+- Updated docs
+
 ### 2.0.5 - 2015-01-04
 - Simplified code escaping system, reducing use of raw tags.
 

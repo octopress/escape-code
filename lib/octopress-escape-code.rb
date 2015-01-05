@@ -108,6 +108,8 @@ end
 if defined? Octopress::Docs
   Octopress::Docs.add({
     name:        "Octopress Escape Code",
+    gem:         "octopress-escape-code",
+    version:     Octopress::EscapeCode::VERSION,
     description: "Automatically escape code with {% raw %} blocks, preventing internal Liquid processing.",
     source_url:  "https://github.com/octopress/escape-code",
     path:         File.expand_path(File.join(File.dirname(__FILE__), "../"))
