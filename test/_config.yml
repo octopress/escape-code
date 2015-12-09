@@ -9,8 +9,13 @@ escape_code: true
 exclude:
   - Gemfile*
 
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  hard_wrap: false
+
 # Build settings
-markdown: redcarpet
 gems:
   - octopress-escape-code
   - octopress-codeblock

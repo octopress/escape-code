@@ -34,6 +34,7 @@ Stuff!
 {% endcodeblock %}
     stuff
     {% foo %}
+
 some text
 
 	{% highlight html %}{% raw %}

@@ -1,5 +1,8 @@
 # Changelog
 
+### 2.1.0 - 2015-12-09
+- Now supports Jekyll 3+
+
 ### 2.0.6 - 2015-01-04
 - Updated docs with better installation instructions.
 

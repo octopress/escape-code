@@ -13,14 +13,15 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/octopress/escape-code"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files | grep -iE "^(bin\/|lib\/|assets\/|changelog|readme|license|)"`.split("\n")
+  spec.files         = `git ls-files | grep -iE "^(bin\/|lib\/|assets\/|changelog|readme|license)"`.split("\n")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'octopress-hooks', '~> 2.0'
+  spec.add_runtime_dependency 'jekyll', '~> 3.0'
 
   spec.add_development_dependency "bundler", "~> 1.6"
+  spec.add_development_dependency "redcarpet"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "clash"
   spec.add_development_dependency "octopress-codeblock"

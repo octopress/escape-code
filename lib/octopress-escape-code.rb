@@ -1,42 +1,27 @@
-require "octopress-escape-code/version"
-require 'octopress-hooks'
+require 'octopress-escape-code/version'
+require 'jekyll'
 
 module Octopress
   module EscapeCode
 
-    class EscapePage < Octopress::Hooks::Page
-      priority :lowest
-
-      def pre_render(page)
-        if Octopress::EscapeCode.escape_enabled?(page)
-          page.content = Octopress::EscapeCode.escape(page)
-        end
-      end
-
-      def post_render(page)
-        Octopress::EscapeCode.unescape_brackets(page.output)
+    Jekyll::Hooks.register [:documents, :pages, :posts], :pre_render do |item|
+      if Octopress::EscapeCode.escape_enabled?(item)
+        puts 'yep'
+        item.content = Octopress::EscapeCode.escape(item)
       end
     end
 
-    class EscapePost < Octopress::Hooks::Post
-      priority :lowest
-
-      def pre_render(page)
-        if Octopress::EscapeCode.escape_enabled?(page)
-          page.content = Octopress::EscapeCode.escape(page)
-        end
-      end
-
-      def post_render(page)
-        Octopress::EscapeCode.unescape_brackets(page.output)
-      end
+    Jekyll::Hooks.register [:documents, :pages, :posts], :post_render do |item|
+      Octopress::EscapeCode.unescape_brackets(item.output)
     end
 
-    def self.escape_enabled?(page)
+    extend self
+
+    def escape_enabled?(page)
       get_config(page, 'escape_code', false)
     end
 
-    def self.get_config(page, config, default)
+    def get_config(page, config, default)
       site_config = page.site.config[config]
       site_config = default if site_config.nil?
 
@@ -46,17 +31,17 @@ module Octopress
       page_config
     end
 
-    def self.escape_brackets(content)
+    def escape_brackets(content)
       content.gsub(/{/,'&#x7b;').gsub(/}/, '&#x7d;')
     end
 
-    def self.unescape_brackets(content)
+    def unescape_brackets(content)
       content.gsub!(/&(amp;)?#x7b;/, '{')
       content.gsub!(/&(amp;)?#x7d;/, '}')
       content
     end
 
-    def self.escape(page)
+    def escape(page)
       ext = page.ext.downcase
       content = page.content.encode!("UTF-8")
       md_ext = %w{.markdown .mdown .mkdn .md .mkd .mdwn .mdtxt .mdtext}
