@@ -1,5 +1,8 @@
 # Changelog
 
+### 2.1.1 - 2015-12-09
+- Removed debug trace
+
 ### 2.1.0 - 2015-12-09
 - Now supports Jekyll 3+
 

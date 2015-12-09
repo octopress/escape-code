@@ -6,7 +6,6 @@ module Octopress
 
     Jekyll::Hooks.register [:documents, :pages, :posts], :pre_render do |item|
       if Octopress::EscapeCode.escape_enabled?(item)
-        puts 'yep'
         item.content = Octopress::EscapeCode.escape(item)
       end
     end
