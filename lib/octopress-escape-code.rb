@@ -41,7 +41,7 @@ module Octopress
     end
 
     def escape(page)
-      ext = page.ext.downcase
+      ext = page.extname.downcase
       content = page.content.encode!("UTF-8")
       md_ext = %w{.markdown .mdown .mkdn .md .mkd .mdwn .mdtxt .mdtext}
 
